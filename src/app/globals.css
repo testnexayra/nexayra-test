@@ -1,0 +1,634 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   COLOR SYSTEM — Light Mode
+   Brand: navy #192A56, gold #C6A35E, slate #718096
+   ============================================================ */
+:root {
+  /* Brand navy — #192A56 */
+  --c-navy:     25 42 86;
+  --c-navy-50:  240 242 247;
+  --c-navy-100: 218 222 235;
+  --c-navy-200: 180 188 213;
+  --c-navy-300: 135 147 184;
+  --c-navy-400: 92 108 152;
+  --c-navy-500: 56 75 122;
+  --c-navy-600: 38 56 102;
+  --c-navy-700: 25 42 86;        /* brand */
+  --c-navy-800: 18 32 68;
+  --c-navy-900: 12 22 50;
+
+  /* Brand gold — #C6A35E */
+  --c-gold:     198 163 94;
+  --c-gold-50:  252 247 235;
+  --c-gold-100: 248 235 205;
+  --c-gold-200: 241 217 158;
+  --c-gold-300: 232 196 116;
+  --c-gold-400: 218 178 80;
+  --c-gold-500: 198 163 94;      /* brand */
+  --c-gold-600: 163 132 65;
+  --c-gold-700: 125 100 48;
+
+  /* Brand slate — #718096 */
+  --c-slate:    113 128 150;
+  --c-slate-50: 247 248 250;
+  --c-slate-100: 226 232 240;
+  --c-slate-200: 203 213 224;
+  --c-slate-300: 160 174 192;
+  --c-slate-400: 113 128 150;    /* brand */
+  --c-slate-500: 74 85 104;
+
+  /* Semantic tokens (light mode) */
+  --c-bg:        249 250 252;
+  --c-fg:        25 42 86;
+  --c-surface:   255 255 255;
+  --c-surface-2: 244 246 250;
+  --c-border:    218 222 235;
+  --c-muted:     113 128 150;
+
+  /* Chart-specific */
+  --c-chart-grid:    229 231 235;
+  --c-chart-text:    74 85 104;
+  --c-chart-tooltip-bg: 25 42 86;
+  --c-chart-tooltip-fg: 255 255 255;
+}
+
+/* ============================================================
+   DARK MODE OVERRIDES
+   ============================================================ */
+.dark {
+  /* Inverted navy — text/icons brighten, backgrounds darken */
+  --c-navy:     230 234 245;
+  --c-navy-50:  35 44 70;
+  --c-navy-100: 45 56 92;
+  --c-navy-200: 70 88 130;
+  --c-navy-300: 130 145 190;
+  --c-navy-400: 165 180 215;     /* secondary text — readable on dark bg */
+  --c-navy-500: 195 208 232;
+  --c-navy-600: 215 225 240;
+  --c-navy-700: 38 48 80;        /* card surfaces */
+  --c-navy-800: 28 38 65;
+  --c-navy-900: 18 27 50;        /* deepest backgrounds */
+
+  /* Gold stays gold (it works on both backgrounds) */
+  --c-gold:     218 178 80;
+  --c-gold-50:  60 50 25;
+  --c-gold-100: 80 65 30;
+
+  /* Slate */
+  --c-slate:    160 174 192;
+  --c-slate-300: 113 128 150;
+  --c-slate-400: 160 174 192;
+
+  /* Semantic — dark */
+  --c-bg:        14 22 42;       /* page bg */
+  --c-fg:        230 234 245;    /* default text */
+  --c-surface:   28 38 65;       /* CARD — clearly visible */
+  --c-surface-2: 38 48 80;       /* nested surfaces */
+  --c-border:    50 62 95;
+  --c-muted:     160 174 192;
+
+  /* Chart colors — properly visible in dark mode */
+  --c-chart-grid:       58 70 105;
+  --c-chart-text:       180 195 225;
+  --c-chart-tooltip-bg: 14 22 42;
+  --c-chart-tooltip-fg: 230 234 245;
+}
+
+/* ============================================================
+   GLOBAL BASE
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-lato), system-ui, sans-serif;
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-fg));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input, select, textarea { color-scheme: light; }
+.dark input, .dark select, .dark textarea { color-scheme: dark; }
+
+/* ============================================================
+   DATE / TIME INPUTS — always render in LIGHT mode for full visibility
+   The browser's native calendar picker is hard to see in dark mode.
+   Forcing color-scheme: light keeps the picker popup white with dark
+   text, and forcing the input itself to a light surface keeps the
+   calendar indicator icon dark-on-light = clearly visible in BOTH modes.
+   ============================================================ */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+.dark input[type="date"],
+.dark input[type="time"],
+.dark input[type="datetime-local"],
+.dark input[type="month"],
+.dark input[type="week"] {
+  color-scheme: light !important;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #cbd5e1 !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator,
+input[type="week"]::-webkit-calendar-picker-indicator,
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator,
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.dark input[type="month"]::-webkit-calendar-picker-indicator,
+.dark input[type="week"]::-webkit-calendar-picker-indicator {
+  filter: none !important;
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
+input[type="date"]::placeholder,
+input[type="time"]::placeholder,
+input[type="datetime-local"]::placeholder,
+.dark input[type="date"]::placeholder,
+.dark input[type="time"]::placeholder,
+.dark input[type="datetime-local"]::placeholder {
+  color: #6b7280 !important;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgb(var(--c-bg)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--c-border)); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--c-muted)); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+.animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+.animate-fade-in    { animation: fadeIn 0.3s ease-out forwards; opacity: 0; }
+
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.10s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.20s; }
+.delay-5 { animation-delay: 0.25s; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Loader pulse */
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+.animate-logo-pulse {
+  animation: logoPulse 1.6s ease-in-out infinite;
+}
+
+/* Loader caption fade-cycle */
+@keyframes captionCycle {
+  0%, 25%   { opacity: 1; transform: translateY(0); }
+  30%, 70%  { opacity: 0; transform: translateY(4px); }
+  75%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+.btn-press { transition: transform 0.1s ease; }
+.btn-press:active { transform: scale(0.97); }
+/* ============================================================
+   POLISH — subtle effects that elevate the whole app
+   ============================================================ */
+
+/* Smoother rounded element shadows in dark mode */
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 0 rgb(0 0 0 / 0.2);
+}
+.dark .shadow {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+.dark .shadow-md {
+  box-shadow: 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+}
+
+/* Card "lift on hover" — universal, very subtle */
+.card-lift {
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px rgba(25, 42, 86, 0.15);
+}
+.dark .card-lift:hover {
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Glass effect for modals and overlays */
+.glass {
+  backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.dark .glass {
+  background: rgba(28, 38, 65, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Smooth focus rings — replaces default ugly outlines */
+*:focus-visible {
+  outline: 2px solid rgb(var(--c-gold));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: none;
+}
+
+/* Premium gold accent gradient text — use sparingly for headings */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #C6A35E 0%, #E8C46E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle "shimmer" loading effect for skeleton loaders */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Smoother scroll on links/buttons */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better text rendering everywhere */
+* {
+  text-rendering: optimizeLegibility;
+}
+
+/* Hairline borders feel premium — slightly muted in light mode */
+.border-hairline {
+  border-color: rgb(var(--c-border) / 0.6);
+}
+
+/* Subtle slide-in for modals */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); } 
+}
+.animate-modal-in {
+  animation: modalIn 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Modal backdrop with proper blur */
+.modal-backdrop {
+  background: rgba(15, 21, 41, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* Subtle pulse on KPI changes */
+@keyframes kpiPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.animate-kpi-pulse {
+  animation: kpiPulse 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium spring animation curve */
+.transition-spring {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   POLISH — subtle effects that elevate the whole app
+   ============================================================ */
+
+/* Better shadows in dark mode (default Tailwind shadows are too faint on dark bg) */
+.dark .shadow-sm  { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.35), 0 1px 3px 0 rgb(0 0 0 / 0.2); }
+.dark .shadow     { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3); }
+.dark .shadow-md  { box-shadow: 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.3); }
+.dark .shadow-lg  { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.3); }
+.dark .shadow-xl  { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4); }
+
+/* Universal card "lift" hover effect — apply anywhere */
+.card-lift {
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px rgba(25, 42, 86, 0.15);
+}
+.dark .card-lift:hover {
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Glass morphism for modals and overlays */
+.glass {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.dark .glass {
+  background: rgba(28, 38, 65, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Smooth gold focus rings — replaces ugly browser defaults */
+*:focus-visible {
+  outline: 2px solid rgb(var(--c-gold));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: none;
+}
+
+/* Premium gold gradient text — for hero numbers / accents */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #C6A35E 0%, #E8C46E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Premium navy gradient text */
+.text-gradient-navy {
+  background: linear-gradient(135deg, #192A56 0%, #2A3F7C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dark .text-gradient-navy {
+  background: linear-gradient(135deg, #E6EAF5 0%, #C8D2E8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer loading animation */
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Modal entry animation */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-modal-in {
+  animation: modalIn 220ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Modal backdrop with proper blur */
+.modal-backdrop {
+  background: rgba(15, 21, 41, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* KPI value pulse for live updates */
+@keyframes kpiPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.03); }
+}
+.animate-kpi-pulse {
+  animation: kpiPulse 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium "spring" easing curve */
+.transition-spring {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hairline border (slightly muted) */
+.border-hairline {
+  border-color: rgb(var(--c-border) / 0.6);
+}
+
+/* Better tap behavior on mobile — no ugly highlight */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimize text rendering app-wide */
+* {
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle "noise" texture utility — adds depth to large flat surfaces */
+.bg-noise {
+  position: relative;
+}
+.bg-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Slightly nicer scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--c-bg));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--c-border));
+  border-radius: 999px;
+  border: 2px solid rgb(var(--c-bg));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--c-muted));
+}
+/* ============================================================
+   Brand "Deep Navy" gradient — consistent across light & dark mode
+   Use the .bg-brand-navy utility on any element that should
+   match the welcome banner's deep navy look in both modes.
+   ============================================================ */
+.bg-brand-navy {
+  background: linear-gradient(135deg, #192A56 0%, #0F1B3D 100%) !important;
+  color: white;
+}
+.bg-brand-navy:hover {
+  background: linear-gradient(135deg, #1F3470 0%, #142457 100%) !important;
+}
+/* ============================================================
+   DARK MODE COMPREHENSIVE FIXES
+   ============================================================ */
+
+.dark .bg-white:not(.bg-brand-navy):not([class*="bg-gradient"]) {
+  background-color: rgb(var(--c-surface)) !important;
+}
+
+.dark .text-navy:not([class*="dark:text"]) {
+  color: rgb(var(--c-fg)) !important;
+}
+
+.dark input.bg-white,
+.dark select.bg-white,
+.dark textarea.bg-white,
+.dark input.bg-navy-50,
+.dark select.bg-navy-50,
+.dark textarea.bg-navy-50 {
+  background-color: rgb(var(--c-surface-2)) !important;
+  color: rgb(var(--c-fg)) !important;
+  border-color: rgb(var(--c-border)) !important;
+}
+
+.dark input:not([class*="bg-"]),
+.dark select:not([class*="bg-"]),
+.dark textarea:not([class*="bg-"]) {
+  background-color: rgb(var(--c-surface-2));
+  color: rgb(var(--c-fg));
+  border-color: rgb(var(--c-border));
+}
+
+.dark table thead {
+  background-color: rgb(var(--c-surface-2));
+}
+.dark table tbody tr {
+  border-color: rgb(var(--c-border) / 0.5);
+}
+
+.dark .border-navy-100:not([class*="dark:border"]) {
+  border-color: rgb(var(--c-border));
+}
+.dark .border-navy-50:not([class*="dark:border"]) {
+  border-color: rgb(var(--c-border) / 0.6);
+}
+
+.dark .hover\:bg-navy-50:hover:not([class*="dark:hover"]) {
+  background-color: rgb(var(--c-surface-2));
+}
+
+.dark .recharts-cartesian-axis-tick text,
+.dark .recharts-legend-item-text,
+.dark .recharts-text {
+  fill: rgb(var(--c-chart-text)) !important;
+}
+
+.dark .recharts-cartesian-grid line,
+.dark .recharts-cartesian-axis line {
+  stroke: rgb(var(--c-chart-grid)) !important;
+}
+
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: rgb(var(--c-chart-tooltip-bg)) !important;
+  border-color: rgb(var(--c-border)) !important;
+  color: rgb(var(--c-chart-tooltip-fg)) !important;
+}
+
+.dark ::placeholder {
+  color: rgb(var(--c-muted) / 0.7) !important;
+}
+
+.dark .bg-white\/95,
+.dark .bg-white\/90 {
+  background-color: rgb(var(--c-surface) / 0.95) !important;
+}
+
+.dark img[alt="Nexayra Arc"]:not([src*="-light"]) {
+  filter: brightness(0) invert(1);
+}
+
+/* ============================================================
+   RECHARTS TOOLTIP — strong contrast in BOTH light and dark mode
+   ============================================================ */
+
+/* Default tooltip — light mode */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(25, 42, 86, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px -8px rgba(25, 42, 86, 0.25) !important;
+  padding: 10px 14px !important;
+  color: #192A56 !important;
+}
+
+/* Tooltip label (the "Secured Projects" line) */
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-label {
+  color: #192A56 !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+}
+
+/* Tooltip item list (the value lines) */
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item {
+  color: #4a5568 !important;
+  padding: 2px 0 !important;
+}
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-name,
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-value,
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-separator,
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-unit {
+  color: #4a5568 !important;
+}
+
+/* Dark mode overrides — high contrast popup against dark surfaces */
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #0F1B3D !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.7) !important;
+  color: #ffffff !important;
+}
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-label {
+  color: #ffffff !important;
+}
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item,
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-name,
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-value,
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-separator,
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item-unit {
+  color: #E6EAF5 !important;
+}
